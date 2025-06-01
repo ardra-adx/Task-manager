@@ -3,20 +3,15 @@ import json
 import os
 
 TASK_FILE = "tasks.json"
-
-# Load tasks from file
 def load_tasks():
     if os.path.exists(TASK_FILE):
         with open(TASK_FILE, "r") as file:
             return json.load(file)
     return []
 
-# Save tasks to file
 def save_tasks(tasks):
     with open(TASK_FILE, "w") as file:
         json.dump(tasks, file, indent=4)
-
-# List all tasks
 def list_tasks():
     tasks = load_tasks()
     if not tasks:
@@ -28,7 +23,6 @@ def list_tasks():
         due = task.get("due", "No due date")
         print(f"[{task['id']}] {status} {task['title']} (Due: {due})")
 
-# Add a new task
 def add_task(title, due):
     tasks = load_tasks()
     task_id = tasks[-1]["id"] + 1 if tasks else 1
@@ -42,7 +36,6 @@ def add_task(title, due):
     save_tasks(tasks)
     print(f"Task added: {title}")
 
-# Edit a task
 def edit_task(task_id, title=None, due=None):
     tasks = load_tasks()
     for task in tasks:
@@ -56,7 +49,6 @@ def edit_task(task_id, title=None, due=None):
             return
     print(f"Task {task_id} not found.")
 
-# Delete a task
 def delete_task(task_id):
     tasks = load_tasks()
     updated_tasks = [task for task in tasks if task["id"] != task_id]
@@ -66,7 +58,6 @@ def delete_task(task_id):
         save_tasks(updated_tasks)
         print(f"Task {task_id} deleted.")
 
-# Mark a task as done
 def mark_done(task_id):
     tasks = load_tasks()
     for task in tasks:
@@ -77,7 +68,6 @@ def mark_done(task_id):
             return
     print(f"Task {task_id} not found.")
 
-# Main function to handle CLI arguments
 def main():
     parser = argparse.ArgumentParser(description="Python CLI Task Manager")
     subparsers = parser.add_subparsers(dest="command")
@@ -106,7 +96,6 @@ def main():
 
     args = parser.parse_args()
 
-    # Command routing
     if args.command == "add":
         add_task(args.title, args.due)
     elif args.command == "edit":
